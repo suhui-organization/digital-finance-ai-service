@@ -1,0 +1,59 @@
+# =============================================================================
+# Cline Rules — digital-finance-ai-service (AI 服务)
+# Python 3 + FastAPI + Pydantic + httpx
+# =============================================================================
+
+## 技术栈
+- 语言: Python 3
+- Web 框架: FastAPI
+- 数据验证: Pydantic
+- HTTP 客户端: httpx
+- ASGI 服务器: uvicorn
+- 开发端口: 16081
+
+## 目录结构约定
+```
+app/
+  main.py          # FastAPI 应用入口
+  routers/         # API 路由
+  services/        # AI 业务逻辑
+  models/          # Pydantic 模型 (请求/响应体)
+  clients/         # 外部 AI API 客户端
+  utils/           # 工具函数
+```
+
+## 代码规范
+- 遵循 PEP 8
+- 使用类型注解 (Type Hints)
+- 异步优先: 使用 async/await 处理 I/O
+- Pydantic BaseModel 用于请求/响应验证
+- docstring 使用 Google 风格
+
+## API 设计规范
+- 统一响应格式: { "code": 0, "message": "success", "data": {} }
+- 错误响应: { "code": int, "message": str, "detail": str }
+- 请求超时: 30 秒
+- 流式响应使用 SSE (Server-Sent Events)
+
+## AI 调用规范
+- 所有外部 AI API 调用必须有超时和重试机制 (httpx timeout + tenacity)
+- API Key 从环境变量加载
+- 请求/响应日志记录（脱敏处理）
+- 熔断器模式: 连续失败 N 次后降级处理
+
+## 安全规范
+- API Key 验证中间件
+- 输入内容审核（防止 prompt injection）
+- 输出内容过滤
+- 请求频率限制
+
+## 测试
+- 单元测试: pytest
+- API 测试: httpx.AsyncClient + pytest-asyncio
+- Mock 外部 AI API 调用
+
+## Cline 行为规则
+- 修改后运行 `ruff check .` 检查代码质量
+- 新增 API 端点需同步更新 FastAPI 自动生成的 OpenAPI 文档
+- AI 模型切换时，确保兼容现有接口
+- 依赖变更需更新 requirements.txt
