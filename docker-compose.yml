@@ -1,0 +1,31 @@
+# =============================================================================
+# digital-finance-ai-service 独立部署文件
+# 镜像来源: SWR (华为云容器镜像服务)
+# 依赖: go-backend 已就绪 (通过 external network 通信)
+# =============================================================================
+version: "3.8"
+
+services:
+  ai-service:
+    image: swr.ap-southeast-3.myhuaweicloud.com/digital-finance-commercial/ai-service:${TAG:-latest}
+    container_name: df-ai-service
+    restart: unless-stopped
+    ports:
+      - "${AI_PORT:-16081}:8001"
+    environment:
+      MODEL_PROVIDER: ${MODEL_PROVIDER:-openai}
+      MODEL_NAME: ${MODEL_NAME:-gpt-4o-mini}
+      API_KEY: ${API_KEY}
+      DATABASE_URL: postgres://${POSTGRES_USER:-dfuser}:${POSTGRES_PASSWORD:-dfpass123}@postgres:5432/${POSTGRES_DB:-digital_finance}?sslmode=disable
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - df-network
+
+networks:
+  df-network:
+    name: digital-finance-network
+    external: true
