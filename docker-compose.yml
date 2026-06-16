@@ -13,9 +13,9 @@ services:
     ports:
       - "${AI_PORT:-16081}:8001"
     environment:
-      MODEL_PROVIDER: ${MODEL_PROVIDER:-openai}
-      MODEL_NAME: ${MODEL_NAME:-gpt-4o-mini}
-      API_KEY: ${API_KEY}
+      MODEL_PROVIDER: ${MODEL_PROVIDER:-minimax}
+      MODEL_NAME: ${MODEL_NAME:-MiniMax-M3}
+      API_KEY: ${API_KEY:-sk-cp-671aUzqwJvB5jrzar-wzBpyN8uy87EnXbQ3GgitRADNol9-jCIB00PqjQSptDCdWLNDfQlbFMp7z0n5l5xvF56E35JJ1ew--IQobbtWeSjtZsilPiysccvM}
       DATABASE_URL: postgres://${POSTGRES_USER:-dfuser}:${POSTGRES_PASSWORD:-dfpass123}@postgres:5432/${POSTGRES_DB:-digital_finance}?sslmode=disable
     logging:
       driver: json-file
